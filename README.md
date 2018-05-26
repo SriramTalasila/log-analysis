@@ -41,12 +41,12 @@
   - fail_count
   
   #### top_art
-      - Command to create top_art view
-      ```
-      create view top_art AS select count(path),REPLACE(path, '/article/','')from log where status ='200 OK' and path!='/' group by path        order by count(path) DESC LIMIT 3;
+  - Command to create top_art view
+  ```
+    create view top_art AS select count(path),REPLACE(path, '/article/','')from log where status ='200 OK' and path!='/' group by path        order by count(path) DESC LIMIT 3;
 
-      ```
-      ```
+  ```
+  ```
       This View Contains the top tree articles views count
        count  |      replace
       --------+--------------------
@@ -55,16 +55,16 @@
        170098 | bad-things-gone
 
       Here 'replace' is the slug of the article
-      ```
+  ```
 
   #### author_slug
-    - Command to create author_slug view
-      ```
-        create view author_slug AS select authors.name,articles.slug from authors INNER JOIN articles ON articles.author = authors.id;
+   - Command to create author_slug view
+   ```
+     create view author_slug AS select authors.name,articles.slug from authors INNER JOIN articles ON articles.author = authors.id;
 
-      ```
+   ```
 
-      ```
+   ```
           Run this command to create author_slug view.
                     name          |           slug
         ------------------------+---------------------------
@@ -76,14 +76,14 @@
          Ursula La Multa        | media-obsessed-with-bears
          Rudolf von Treppenwitz | trouble-for-troubled
          Ursula La Multa        | so-many-bears
-      ```
+   ```
   #### slug_count
-    - Command to create slug_count view
-      ```
+   - Command to create slug_count view
+   ```
       create view slug_count AS select count(path),REPLACE(path, '/article/','')from log where status ='200 OK' and path!='/' group by         path order by count(path) DESC;
 
-      ```
-      ```
+   ```
+   ```
 
       This commant will create a view like this
          count  |          replace
@@ -97,14 +97,14 @@
           84504 | so-many-bears
           84383 | media-obsessed-with-bears
 
-      ```
+   ```
   #### req_count
-     - Command to create req_count view
-      ```
+   - Command to create req_count view
+   ```
        create view Req_count as select count(time::timestamp::date),time::timestamp::date from log  GROUP BY time::timestamp::date;
 
-      ```
-      ```
+   ```
+   ```
        count |    time
       -------+------------
        38705 | 2016-07-01
@@ -117,14 +117,14 @@
        55084 | 2016-07-08
        This view contains the total number of requests per day 
 
-      ```
+   ```
   #### fail_count
-    - Command to create fail_count
-      ```
+   - Command to create fail_count
+   ```
       create view fail_count as select count(time::timestamp::date),time::timestamp::date from log where status='404 NOT FOUND' GROUP BY       time::timestamp::date;
 
-      ```
-      ```
+   ```
+   ```
       This view contain Date and request failure count
        count |    time
       -------+------------
@@ -137,7 +137,7 @@
          360 | 2016-07-07
          371 | 2016-07-10
 
-      ```
+   ```
   
 # Running the script 
   After importing the data and creating the views move the loganalysis.py file to your vagrant directory or git clone the directory
