@@ -46,6 +46,7 @@ def print_err_percent():
     sql = '''select fail_count.count*100.00 / req_count.count as percent,
     fail_count.time from fail_count INNER JOIN req_count
     ON fail_count.time=req_count.time
+    where fail_count.count*100.00 / req_count.count > 1
     ORDER BY  fail_count.count*100.00 / req_count.count DESC LIMIT 1;'''
     cur.execute(sql)
     rows = cur.fetchall()
