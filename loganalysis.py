@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import psycopg2
 
 # This module helps to connect to postgres database
