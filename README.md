@@ -6,6 +6,7 @@
 # Prerequisites
   - Install Vagrant and virtualbox.
   - Download the vagrant box suitable for you virtualbox.
+  - This [Document](https://www.vagrantup.com/docs/virtualbox/) helps in installing virtualbox and vagrant.
   - command to install postgresql
     ```
       sudo apt-get install postgresql
