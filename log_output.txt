@@ -1,0 +1,14 @@
+vagrant@ubuntu-xenial:/vagrant/newslogs$ python logsanalaysis.py
+    Top three most popular articles of the time
+        candidate-is-jerk ---  338647
+        bears-love-berries ---  253801
+        bad-things-gone ---  170098
+
+    Top most popular authors of the time
+        Ursula La Multa ---> 507594
+        Rudolf von Treppenwitz ---> 423457
+        Anonymous Contributor ---> 170098
+        Markoff Chaney ---> 84557
+
+    Day with more than 1% of requests lead to errors
+        2016-07-17 ---> 2.26 %
