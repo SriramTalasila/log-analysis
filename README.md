@@ -6,8 +6,26 @@
 # Prerequisites
   - Install Vagrant and virtualbox.
   - Download the vagrant box suitable for you virtualbox.
-  - Configure and install postgres sql .
+  - command to install postgresql
+    ```
+      sudo apt-get install postgresql
+    ```
   - Create a user vagrant with password '12345' and grant Superuser and Createdb permissions.
+    ```
+    vagrant@ubuntu-xenial:~$ sudo -i -u postgres
+    postgres@ubuntu-xenial:~$ createuser vagrant;
+    postgres@ubuntu-xenial:~$ psql
+    psql (9.5.12)
+    Type "help" for help.
+    postgres=# ALTER user vagrant with PASSWORD '12345';
+    ALTER ROLE
+    postgres=# ALTER user vagrant with Superuser;
+    ALTER ROLE
+    postgres=# ALTER user vagrant with createdb;
+    ALTER ROLE
+    
+    ```
+    The above commands helps to create user vagrant and give permissions
   - Now Login into psql as vagrant and create a database name news.
   - [Download](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip) .sql file and import to news      database
   - Command to import .sql file is
@@ -23,99 +41,103 @@
   - fail_count
   
   #### top_art
-  ```
-  create view top_art AS select count(path),REPLACE(path, '/article/','')from log where status ='200 OK' and path!='/' group by path order by count(path) DESC LIMIT 3;
-  
-  ```
-  ```
-  This View Contains the top tree articles views count
-   count  |      replace
-  --------+--------------------
-   338647 | candidate-is-jerk
-   253801 | bears-love-berries
-   170098 | bad-things-gone
-  
-  Here 'replace' is the slug of the article
-  ```
-  
+      - Command to create top_art view
+      ```
+      create view top_art AS select count(path),REPLACE(path, '/article/','')from log where status ='200 OK' and path!='/' group by path        order by count(path) DESC LIMIT 3;
+
+      ```
+      ```
+      This View Contains the top tree articles views count
+       count  |      replace
+      --------+--------------------
+       338647 | candidate-is-jerk
+       253801 | bears-love-berries
+       170098 | bad-things-gone
+
+      Here 'replace' is the slug of the article
+      ```
+
   #### author_slug
-  ```
-    create view author_slug AS select authors.name,articles.slug from authors INNER JOIN articles ON articles.author = authors.id;
-  
-  ```
-  
-  ```
-      Run this command to create author_slug view.
-                name          |           slug
-    ------------------------+---------------------------
-     Anonymous Contributor  | bad-things-gone
-     Markoff Chaney         | balloon-goons-doomed
-     Ursula La Multa        | bears-love-berries
-     Rudolf von Treppenwitz | candidate-is-jerk
-     Ursula La Multa        | goats-eat-googles
-     Ursula La Multa        | media-obsessed-with-bears
-     Rudolf von Treppenwitz | trouble-for-troubled
-     Ursula La Multa        | so-many-bears
-  ```
+    - Command to create author_slug view
+      ```
+        create view author_slug AS select authors.name,articles.slug from authors INNER JOIN articles ON articles.author = authors.id;
+
+      ```
+
+      ```
+          Run this command to create author_slug view.
+                    name          |           slug
+        ------------------------+---------------------------
+         Anonymous Contributor  | bad-things-gone
+         Markoff Chaney         | balloon-goons-doomed
+         Ursula La Multa        | bears-love-berries
+         Rudolf von Treppenwitz | candidate-is-jerk
+         Ursula La Multa        | goats-eat-googles
+         Ursula La Multa        | media-obsessed-with-bears
+         Rudolf von Treppenwitz | trouble-for-troubled
+         Ursula La Multa        | so-many-bears
+      ```
   #### slug_count
-  
-  ```
-  create view slug_count AS select count(path),REPLACE(path, '/article/','')from log where status ='200 OK' and path!='/' group by path order by count(path) DESC;
-  
-  ```
-  ```
-  
-  This commant will create a view like this
-     count  |          replace
-    --------+---------------------------
-     338647 | candidate-is-jerk
-     253801 | bears-love-berries
-     170098 | bad-things-gone
-      84906 | goats-eat-googles
-      84810 | trouble-for-troubled
-      84557 | balloon-goons-doomed
-      84504 | so-many-bears
-      84383 | media-obsessed-with-bears
-  
-  ```
+    - Command to create slug_count view
+      ```
+      create view slug_count AS select count(path),REPLACE(path, '/article/','')from log where status ='200 OK' and path!='/' group by         path order by count(path) DESC;
+
+      ```
+      ```
+
+      This commant will create a view like this
+         count  |          replace
+        --------+---------------------------
+         338647 | candidate-is-jerk
+         253801 | bears-love-berries
+         170098 | bad-things-gone
+          84906 | goats-eat-googles
+          84810 | trouble-for-troubled
+          84557 | balloon-goons-doomed
+          84504 | so-many-bears
+          84383 | media-obsessed-with-bears
+
+      ```
   #### req_count
-  ```
-   create view Req_count as select count(time::timestamp::date),time::timestamp::date from log  GROUP BY time::timestamp::date;
-  
-  ```
-  ```
-   count |    time
-  -------+------------
-   38705 | 2016-07-01
-   55200 | 2016-07-02
-   54866 | 2016-07-03
-   54903 | 2016-07-04
-   54585 | 2016-07-05
-   54774 | 2016-07-06
-   54740 | 2016-07-07
-   55084 | 2016-07-08
-   This view contains the total number of requests per day 
-   
-  ```
+     - Command to create req_count view
+      ```
+       create view Req_count as select count(time::timestamp::date),time::timestamp::date from log  GROUP BY time::timestamp::date;
+
+      ```
+      ```
+       count |    time
+      -------+------------
+       38705 | 2016-07-01
+       55200 | 2016-07-02
+       54866 | 2016-07-03
+       54903 | 2016-07-04
+       54585 | 2016-07-05
+       54774 | 2016-07-06
+       54740 | 2016-07-07
+       55084 | 2016-07-08
+       This view contains the total number of requests per day 
+
+      ```
   #### fail_count
-  ```
-  create view fail_count as select count(time::timestamp::date),time::timestamp::date from log where status='404 NOT FOUND' GROUP BY time::timestamp::date;
-  
-  ```
-  ```
-  This view contain Date and request failure count
-   count |    time
-  -------+------------
-     329 | 2016-07-31
-     420 | 2016-07-06
-    1265 | 2016-07-17
-     433 | 2016-07-19
-     431 | 2016-07-24
-     373 | 2016-07-12
-     360 | 2016-07-07
-     371 | 2016-07-10
-  
-  ```
+    - Command to create fail_count
+      ```
+      create view fail_count as select count(time::timestamp::date),time::timestamp::date from log where status='404 NOT FOUND' GROUP BY       time::timestamp::date;
+
+      ```
+      ```
+      This view contain Date and request failure count
+       count |    time
+      -------+------------
+         329 | 2016-07-31
+         420 | 2016-07-06
+        1265 | 2016-07-17
+         433 | 2016-07-19
+         431 | 2016-07-24
+         373 | 2016-07-12
+         360 | 2016-07-07
+         371 | 2016-07-10
+
+      ```
   
 # Running the script 
   After importing the data and creating the views move the loganalysis.py file to your vagrant directory or git clone the directory
